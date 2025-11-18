@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Todo.Core.Models.TodoItem
+﻿namespace Todo.Core.Models.TodoItem
 {
     public class TodoItem
     {
