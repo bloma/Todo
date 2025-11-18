@@ -5,6 +5,6 @@ namespace Todo.Infrastructure.Repository
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<TodoItem> TodoItems { get; set; }
     }
 }
