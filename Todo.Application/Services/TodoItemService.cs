@@ -40,6 +40,7 @@ namespace Todo.Application.Services
             {
                 return false;
             }
+
             context.TodoItems.Remove(todoItem);
             await context.SaveChangesAsync();
 
@@ -87,6 +88,7 @@ namespace Todo.Application.Services
             todoItem.Title = request.Title;
             todoItem.Description = request.Description;
             todoItem.IsCompleted = request.IsCompleted;
+
             await context.SaveChangesAsync();
 
             return new TodoItemResponse
