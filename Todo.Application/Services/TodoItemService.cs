@@ -7,27 +7,27 @@ namespace Todo.Application.Services
 {
     public class TodoItemService(AppDbContext context) : ITodoItemService
     {
-        public Task<TodoItemResponse> CreateTodoItemAsync(TodoItemRequest request)
+        public async Task<TodoItemResponse> CreateTodoItemAsync(TodoItemRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteTodoItemAsync(Guid id)
+        public async Task<bool> DeleteTodoItemAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoItemResponse>> GetAllTodoItemsAsync()
+        public async Task<IEnumerable<TodoItemResponse>> GetAllTodoItemsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<TodoItemResponse> GetTodoItemByIdAsync(Guid id)
+        public async Task<TodoItemResponse> GetTodoItemByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TodoItemResponse> UpdateTodoItemAsync(Guid id, TodoItemRequest request)
+        public async Task<TodoItemResponse> UpdateTodoItemAsync(Guid id, TodoItemRequest request)
         {
             throw new NotImplementedException();
         }
