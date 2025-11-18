@@ -11,14 +11,14 @@ namespace Todo.API.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> CreateTodoItem([FromBody] TodoItemRequest request)
+        public async Task<IActionResult> CreateTodoItemAsync([FromBody] TodoItemRequest request)
         {
             var result = await todoItemService.CreateTodoItemAsync(request);
-            return CreatedAtAction(nameof(GetTodoItemById), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetTodoItemByIdAsync), new { id = result.Id }, result);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTodoItemById(Guid id)
+        public async Task<IActionResult> GetTodoItemByIdAsync(Guid id)
         {
             var result = await todoItemService.GetTodoItemByIdAsync(id);
             if (result == null)
@@ -29,14 +29,14 @@ namespace Todo.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTodoItems()
+        public async Task<IActionResult> GetAllTodoItemsAsync()
         {
             var result = await todoItemService.GetAllTodoItemsAsync();
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTodoItem(Guid id, [FromBody] TodoItemRequest request)
+        public async Task<IActionResult> UpdateTodoItemAsync(Guid id, [FromBody] TodoItemRequest request)
         {
             var result = await todoItemService.UpdateTodoItemAsync(id, request);
             if (result == null)
@@ -47,7 +47,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(Guid id)
+        public async Task<IActionResult> DeleteTodoItemAsync(Guid id)
         {
             var success = await todoItemService.DeleteTodoItemAsync(id);
             if (!success)
