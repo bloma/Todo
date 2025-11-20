@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Services.Interface;
+using Todo.Core.Models.Request;
 
 namespace Todo.API.Controllers
 {
@@ -8,19 +9,19 @@ namespace Todo.API.Controllers
     public class AuthController(IUserService service) : ControllerBase
     {
         [HttpPost("login")]
-        public IActionResult Login()
+        public IActionResult Login([FromBody] UserLoginRequest request)
         {
-            var result = service.LoginAsync(null);
+            var result = service.LoginAsync(request);
             // Placeholder for login logic
-            return Ok("Login successful");
+            return Ok(result);
         }
 
         [HttpPost("register")]
-        public IActionResult Register()
+        public IActionResult Register([FromBody] UserRegisterRequest request)
         {
-            var result = service.RegisterAsync(null);
+            var result = service.RegisterAsync(request);
             // Placeholder for registration logic
-            return Ok("Registration successful");
+            return Ok(result);
         }
     }
 }

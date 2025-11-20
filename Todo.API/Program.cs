@@ -2,11 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Todo.Application.Services;
 using Todo.Application.Services.Interface;
 using Todo.Infrastructure.Repository;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<ITodoItemService, TodoItemService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer("DefaultConnection");
@@ -22,6 +24,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
