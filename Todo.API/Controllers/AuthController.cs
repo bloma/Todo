@@ -9,19 +9,27 @@ namespace Todo.API.Controllers
     public class AuthController(IUserService service) : ControllerBase
     {
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLoginRequest request)
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
-            var result = service.LoginAsync(request);
+            var result = await service.LoginAsync(request);
             
             return Ok(result);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserRegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
         {
-            var result = service.RegisterAsync(request);
-            
-            return Ok(result);
+            try
+            {
+                var result = await service.RegisterAsync(request);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }
