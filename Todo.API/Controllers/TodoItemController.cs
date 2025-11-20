@@ -9,16 +9,16 @@ namespace Todo.API.Controllers
     public class TodoItemController(ITodoItemService todoItemService) : ControllerBase
     {
 
-        [HttpPost]
+        [HttpPost("addItem")]
         public async Task<IActionResult> CreateTodoItemAsync([FromBody] TodoItemRequest request)
         {
             var result = await todoItemService.CreateTodoItemAsync(request);
 
-            return CreatedAtAction(nameof(GetTodoItemByIdAsync), new { id = result.Id }, result);
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTodoItemByIdAsync(Guid id)
+        [HttpGet("GetItemById/{id}")]
+        public async Task<IActionResult> GetTodoItemByIdAsync([FromRoute]Guid id)
         {
             var result = await todoItemService.GetTodoItemByIdAsync(id);
 
@@ -29,7 +29,7 @@ namespace Todo.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("GetAllItems")]
         public async Task<IActionResult> GetAllTodoItemsAsync()
         {
             var result = await todoItemService.GetAllTodoItemsAsync();
@@ -49,8 +49,8 @@ namespace Todo.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItemAsync(Guid id)
+        [HttpDelete("DeleteItemById/{id}")]
+        public async Task<IActionResult> DeleteTodoItemAsync([FromRoute] Guid id)
         {
             var success = await todoItemService.DeleteTodoItemAsync(id);
 

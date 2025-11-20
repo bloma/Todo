@@ -12,7 +12,6 @@ namespace Todo.Application.Services
         {
             var todoItem = new TodoItem
             {
-                Id = Guid.NewGuid(),
                 Title = request.Title,
                 Description = request.Description,
                 IsCompleted = request.IsCompleted
