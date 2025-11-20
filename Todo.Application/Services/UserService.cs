@@ -45,14 +45,16 @@ namespace Todo.Application.Services
             var hash = new PasswordHasher<User>().HashPassword(user, request.Password!);
             user.Password = hash;
 
-            context.Users.Add(user);
+            await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
 
             var response = new UserRegisterResponse
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
-                Email = user.Email
+                Email = user.Email,
+                Username = user.Username
             };
 
             return response;
