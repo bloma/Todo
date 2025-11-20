@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Services.Interface;
 using Todo.Core.Models.Request;
 
@@ -10,6 +11,7 @@ namespace Todo.API.Controllers
     {
 
         [HttpPost("addItem")]
+        [Authorize]
         public async Task<IActionResult> CreateTodoItemAsync([FromBody] TodoItemRequest request)
         {
             var result = await todoItemService.CreateTodoItemAsync(request);
@@ -30,6 +32,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpGet("GetAllItems")]
+        [Authorize]
         public async Task<IActionResult> GetAllTodoItemsAsync()
         {
             var result = await todoItemService.GetAllTodoItemsAsync();
@@ -38,6 +41,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateTodoItemAsync(Guid id, [FromBody] TodoItemRequest request)
         {
             var result = await todoItemService.UpdateTodoItemAsync(id, request);
@@ -50,6 +54,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpDelete("DeleteItemById/{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTodoItemAsync([FromRoute] Guid id)
         {
             var success = await todoItemService.DeleteTodoItemAsync(id);
