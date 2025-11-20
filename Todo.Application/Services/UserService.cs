@@ -33,6 +33,8 @@ namespace Todo.Application.Services
 
         public async Task<UserRegisterResponse> RegisterAsync(UserRegisterRequest request)
         {
+
+
             var user = new User
             {
                 Name = request.Name!,
@@ -42,6 +44,19 @@ namespace Todo.Application.Services
                 PhoneNumber = request.PhoneNumber!
 
             };
+
+            if (request.Password == null)
+            {
+                throw new Exception("Password cannot be null");
+            }
+
+            var userExist = await context.Users.AnyAsync(u => u.Username == request.Username);
+
+            if (userExist)
+            {
+                throw new Exception("User Already exist");
+            }
+
             var hash = new PasswordHasher<User>().HashPassword(user, request.Password!);
             user.Password = hash;
             try
