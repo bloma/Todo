@@ -12,7 +12,7 @@ namespace Todo.API.Controllers
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
             var result = service.LoginAsync(request);
-            // Placeholder for login logic
+            
             return Ok(result);
         }
 
@@ -20,7 +20,7 @@ namespace Todo.API.Controllers
         public IActionResult Register([FromBody] UserRegisterRequest request)
         {
             var result = service.RegisterAsync(request);
-            // Placeholder for registration logic
+            
             return Ok(result);
         }
     }

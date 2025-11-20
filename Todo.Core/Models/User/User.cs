@@ -1,5 +1,4 @@
-﻿
-namespace Todo.Core.Models.Users
+﻿namespace Todo.Core.Models.Users
 {
     public class User
     {
