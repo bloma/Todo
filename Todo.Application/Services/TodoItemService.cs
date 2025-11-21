@@ -1,4 +1,6 @@
-﻿using Todo.Application.Services.Interface;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Todo.Application.Services.Interface;
 using Todo.Core.Models.Request;
 using Todo.Core.Models.Response;
 using Todo.Core.Models.TodoItem;
@@ -14,7 +16,8 @@ namespace Todo.Application.Services
             {
                 Title = request.Title,
                 Description = request.Description,
-                IsCompleted = request.IsCompleted
+                IsCompleted = request.IsCompleted,
+                UserId = request.UserId
             };
 
             var results = context.TodoItems.Add(todoItem);
@@ -25,7 +28,8 @@ namespace Todo.Application.Services
                 Id = results.Entity.Id,
                 Title = results.Entity.Title,
                 Description = results.Entity.Description,
-                IsCompleted = results.Entity.IsCompleted
+                IsCompleted = results.Entity.IsCompleted,
+                UserId = results.Entity.UserId
             };
 
             return res;
@@ -46,20 +50,22 @@ namespace Todo.Application.Services
             return true;
         }
 
-        public async Task<IEnumerable<TodoItemResponse>> GetAllTodoItemsAsync()
+        public async Task<IEnumerable<TodoItemResponse>> GetAllTodoItemsAsync(Guid userId)
         {
-            return context.TodoItems.Select(i => new TodoItemResponse
+            return context.TodoItems.Where(t=>t.UserId == userId).Select(i => new TodoItemResponse
             {
                 Id = i.Id,
+                UserId = i.UserId,
                 Title = i.Title,
                 Description = i.Description,
                 IsCompleted = i.IsCompleted
             });
         }
 
-        public async Task<TodoItemResponse> GetTodoItemByIdAsync(Guid id)
+        public async Task<TodoItemResponse> GetTodoItemByIdAsync(Guid id, Guid userId)
         {
-            var result = await context.TodoItems.FindAsync(id);
+            var result = await context.TodoItems
+                .FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
 
             if (result == null)
             {
@@ -69,6 +75,7 @@ namespace Todo.Application.Services
             return new TodoItemResponse
             {
                 Id = result.Id,
+                UserId = result.UserId,
                 Title = result.Title,
                 Description = result.Description,
                 IsCompleted = result.IsCompleted

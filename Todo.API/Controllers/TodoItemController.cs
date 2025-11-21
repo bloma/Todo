@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Todo.Application.Services.Interface;
 using Todo.Core.Models.Request;
 
@@ -16,7 +17,10 @@ namespace Todo.API.Controllers
         {
             try
             {
-               var result = await todoItemService.CreateTodoItemAsync(request);
+                var userId = HttpContext.User.Claims.First().Value;
+                request.UserId = Guid.Parse(userId);
+
+                var result = await todoItemService.CreateTodoItemAsync(request);
 
                 return Ok(result);
             }
@@ -29,7 +33,9 @@ namespace Todo.API.Controllers
         [HttpGet("GetItemById/{id}")]
         public async Task<IActionResult> GetTodoItemByIdAsync([FromRoute]Guid id)
         {
-            var result = await todoItemService.GetTodoItemByIdAsync(id);
+            var userId = Guid.Parse(HttpContext.User.Claims.First().Value);
+                
+            var result = await todoItemService.GetTodoItemByIdAsync(id, userId);
 
             if (result == null)
             {
@@ -43,7 +49,8 @@ namespace Todo.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllTodoItemsAsync()
         {
-            var result = await todoItemService.GetAllTodoItemsAsync();
+            var userId = Guid.Parse(HttpContext.User.Claims.First().Value);
+            var result = await todoItemService.GetAllTodoItemsAsync(userId);
 
             return Ok(result);
         }
