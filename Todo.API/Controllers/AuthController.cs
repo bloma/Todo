@@ -11,9 +11,16 @@ namespace Todo.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
-            var result = await service.LoginAsync(request);
-            
-            return Ok(result);
+            try
+            {
+                var result = await service.LoginAsync(request);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }           
         }
 
         [HttpPost("register")]

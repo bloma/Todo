@@ -14,9 +14,16 @@ namespace Todo.API.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTodoItemAsync([FromBody] TodoItemRequest request)
         {
-            var result = await todoItemService.CreateTodoItemAsync(request);
+            try
+            {
+               var result = await todoItemService.CreateTodoItemAsync(request);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }          
         }
 
         [HttpGet("GetItemById/{id}")]
@@ -26,8 +33,9 @@ namespace Todo.API.Controllers
 
             if (result == null)
             {
-                return NotFound();
+                return NotFound("Item with the provided Id cannot be found");
             }
+
             return Ok(result);
         }
 

@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
 
 namespace Todo.Application.Services
 {
@@ -19,6 +20,12 @@ namespace Todo.Application.Services
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
+            var verifiedpassword = BCrypt.Net.BCrypt.Verify(request.Password, user!.Password);
+
+            if (!verifiedpassword)
+            {
+                throw new Exception("Wrong username or password");
+            }
             var token = GenerateJwtToken(user!); 
 
             var response = new UserLoginResponse
@@ -34,17 +41,6 @@ namespace Todo.Application.Services
         public async Task<UserRegisterResponse> RegisterAsync(UserRegisterRequest request)
         {
 
-
-            var user = new User
-            {
-                Name = request.Name!,
-                Surname = request.Surname!,
-                Email = request.Email!,
-                Username = request.Username!,
-                PhoneNumber = request.PhoneNumber!
-
-            };
-
             if (request.Password == null)
             {
                 throw new Exception("Password cannot be null");
@@ -57,8 +53,19 @@ namespace Todo.Application.Services
                 throw new Exception("User Already exist");
             }
 
-            var hash = new PasswordHasher<User>().HashPassword(user, request.Password!);
-            user.Password = hash;
+            var hash = BCrypt.Net.BCrypt.HashPassword(request.Password!);
+            
+            var user = new User
+            {
+                Name = request.Name!,
+                Surname = request.Surname!,
+                Email = request.Email!,
+                Username = request.Username!,
+                PhoneNumber = request.PhoneNumber!,
+                Password = hash!
+            };
+
+            
             try
             {
                 await context.Users.AddAsync(user);
