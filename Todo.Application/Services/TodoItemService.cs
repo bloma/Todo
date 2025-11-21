@@ -41,7 +41,7 @@ namespace Todo.Application.Services
 
             if (todoItem == null)
             {
-                return false;
+                throw new KeyNotFoundException("Todo item not found.");
             }
 
             context.TodoItems.Remove(todoItem);
@@ -69,7 +69,7 @@ namespace Todo.Application.Services
 
             if (result == null)
             {
-                return null;
+                throw new KeyNotFoundException("Todo item not found.");
             }
 
             return new TodoItemResponse
@@ -88,7 +88,7 @@ namespace Todo.Application.Services
 
             if (todoItem == null)
             {
-                return null;
+                throw new KeyNotFoundException("Todo item not found.");
             }
 
             todoItem.Title = request.Title;
