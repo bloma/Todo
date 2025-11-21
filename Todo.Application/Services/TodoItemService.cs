@@ -39,7 +39,7 @@ namespace Todo.Application.Services
         {
             var todoItem = await context.TodoItems.FindAsync(id);
 
-            if (todoItem == null)
+            if (todoItem is null)
             {
                 throw new KeyNotFoundException("Todo item not found.");
             }
@@ -67,7 +67,7 @@ namespace Todo.Application.Services
             var result = await context.TodoItems
                 .FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
 
-            if (result == null)
+            if (result is null)
             {
                 throw new KeyNotFoundException("Todo item not found.");
             }
@@ -84,11 +84,15 @@ namespace Todo.Application.Services
 
         public async Task<TodoItemResponse> UpdateTodoItemAsync(Guid id, TodoItemRequest request)
         {
+            if(id == Guid.Empty)
+            {
+                throw new Exception("Id cannot be null.");
+            }
             var todoItem = await context.TodoItems.FindAsync(id);
 
-            if (todoItem == null)
+            if (todoItem is null)
             {
-                throw new KeyNotFoundException("Todo item not found.");
+                throw new Exception("Todo item not found.");
             }
 
             todoItem.Title = request.Title;

@@ -20,7 +20,7 @@ namespace Todo.Application.Services
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
-            if(user == null)
+            if(user is null)
             {
                 throw new Exception("Wrong username or password");
             }
@@ -46,9 +46,9 @@ namespace Todo.Application.Services
         public async Task<UserRegisterResponse> RegisterAsync(UserRegisterRequest request)
         {
 
-            if (request.Password == null)
+            if (request.Username is null)
             {
-                throw new Exception("Password cannot be null");
+                throw new Exception("Username cannot be null");
             }
 
             var userExist = await context.Users.AnyAsync(u => u.Username == request.Username);
